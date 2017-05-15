@@ -48,35 +48,29 @@ public abstract class AbstractQueryProperty {
     // remove this later
     private void appendFilter(StringBuilder sb, String key, Object fieldValue) {
         if (!sb.toString().contains("WHERE") && fieldValue != null) {
-            if (key.contains("_id") || key.contains("environment_code")) {
-                sb.append(" WHERE " + key + " = " + (Integer) fieldValue);
-            } else if (key.contains("gt_event_ts")) {
-                sb.append(" WHERE " + "event_ts" + " > " + (String) fieldValue);
-            } else if (key.contains("gt_eq_event_ts")) {
-                sb.append(" WHERE " + "event_ts" + " >= " + (String) fieldValue);
-
-            } else if (key.contains("lt_event_ts")) {
-                sb.append(" WHERE " + "event_ts" + " < " + (String) fieldValue);
-
-            } else {
-                sb.append(" WHERE " + key + " = '" + (String) fieldValue + "'");
-            }
+            sb.append(" WHERE ");
+            buildQueryStatement(sb, key, fieldValue);
         } else if (fieldValue != null) {
-            //  sb.append(" "+fieldName+"='"+fieldValue+"'");
-
-            if (key.contains("_id") || key.contains("environment_code")) {
-                sb.append(" AND " + key + " = " + (int) fieldValue);
-            } else if (key.contains("gt_event_ts")) {
-                sb.append(" AND " + "event_ts" + " > " + (String) fieldValue);
-            } else if (key.contains("gt_eq_event_ts")) {
-                sb.append(" AND " + "event_ts" + " >= " + (String) fieldValue);
-
-            } else if (key.contains("lt_event_ts")) {
-                sb.append(" AND " + "event_ts" + " < " + (String) fieldValue);
-
-            } else {
-                sb.append(" AND " + key + " = '" + (String) fieldValue + "'");
-            }
+            sb.append(" AND ");
+            buildQueryStatement(sb, key, fieldValue);
         }
     }
+
+    private void buildQueryStatement(StringBuilder sb, String key, Object fieldValue) {
+        if (key.contains("_id") || key.contains("environment_code")) {
+            sb.append(key + " = " + (int) fieldValue);
+        } else if (key.contains("gt_event_ts")) {
+            sb.append("event_ts" + " > " + (String) fieldValue);
+        } else if (key.contains("gt_eq_event_ts")) {
+            sb.append("event_ts" + " >= " + (String) fieldValue);
+        } else if (key.contains("lt_event_ts")) {
+            sb.append("event_ts" + " < " + (String) fieldValue);
+        } else if (key.contains("event_ts")) {
+            sb.append("event_ts" + " = " + (String) fieldValue);
+        } else {
+            sb.append(key + " = '" + (String) fieldValue + "'");
+        }
+    }
+
+
 }
