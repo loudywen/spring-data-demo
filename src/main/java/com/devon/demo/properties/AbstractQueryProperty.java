@@ -45,7 +45,6 @@ public abstract class AbstractQueryProperty {
     abstract public String getCqlString(StringBuilder stringBuilder);
 
 
-    // remove this later
     private void appendFilter(StringBuilder sb, String key, Object fieldValue) {
         if (!sb.toString().contains("WHERE") && fieldValue != null) {
             sb.append(" WHERE ");

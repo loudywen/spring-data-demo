@@ -1,5 +1,7 @@
 package com.devon.demo.services;
 
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 import com.devon.demo.model.ArmoryAudit;
 import com.devon.demo.properties.ArmoryAuditQueryProperty;
 import com.devon.demo.repository.ArmoryAuditRepository;
@@ -36,13 +38,11 @@ public class ArmoryAuditQueryServiceImpl implements BaseQueryService {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT * FROM armory.armory_audit");
-        System.out.println("==== " + armoryAuditQueryProperty.getCqlString(stringBuilder));
-//        ResultSet resultSets = this.cassandraOperations.getSession().execute(armoryAuditQueryProperty.getCqlString(stringBuilder));
-//        for (Row row : resultSets) {
-//            armoryAuditList.add(converter.read(ArmoryAudit.class, row));
-//        }
-//        armoryAuditMap.put(null, armoryAuditList);
-//        return armoryAuditMap;
-        return null;
+        ResultSet resultSets = this.cassandraOperations.getSession().execute(armoryAuditQueryProperty.getCqlString(stringBuilder));
+        for (Row row : resultSets) {
+            armoryAuditList.add(converter.read(ArmoryAudit.class, row));
+        }
+        armoryAuditMap.put(null, armoryAuditList);
+        return armoryAuditMap;
     }
 }
